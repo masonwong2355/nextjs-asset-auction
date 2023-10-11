@@ -1,0 +1,29 @@
+{
+    "31337": { "AuctionHouse": ["0x5FbDB2315678afecb367f032d93F642f64180aa3"] },
+    "80001": {
+        "AuctionHouse": [
+            "0xDB4DCB321e25Ed227f6eE8d61a400599AEf084D1",
+            "0x2976e21f33da2C71b1789D487510b750f2fA87da",
+            "0x9E9310b95f6D2De4a6cf8Fea0bCb89ae8eE68570",
+            "0x37435b1d920445F6E2ED930f956086312CD26C3a",
+            "0xA9D0fB2ecBb2482De0834F94162Cde2C074acD47",
+            "0x1a3b0E7AA6B84ffEe65784F23A4c9b6f4Df2D4E0",
+            "0x04468d927D12944Fa5e1C839FCa4Eb04932Cd717",
+            "0x8967331f2174812aD820136d8068152c68376A9a"
+        ],
+        "AuctionNFT": [
+            "0x963D1C98785273Eb2a8dEEe565779e389bA7a465",
+            "0x2751710819714675bd2ae976eBF3B2ed45ea7faf",
+            "0x4aAf0ef0cA9FBEbb7ac6750AD62885e912bD36Db",
+            "0x2CC2CE2390c386888f8fAdD57Cd2466E875e606a",
+            "0xe55C1ff89C102c0C5BDfBC55F8D7FF0037d6F3F6",
+            "0xE1d50E5c92E2dDaF8Bf26c91BEc616B12AD6aad6",
+            "0x50EDf3a87716a659cE35E25E2fd66c3a3bBDa4d0",
+            "0x4976B90aB67eC44A963c1Ef06D97166BF094f1Be"
+        ]
+    },
+    "11155111": {
+        "AuctionHouse": ["0x8394dF077a901F11989001a98eda5bE96f4f95f5"],
+        "AuctionNFT": ["0x992b92ec5c1C3375828a3C3C6a300d5881AFC096"]
+    }
+}
