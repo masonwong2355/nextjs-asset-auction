@@ -1,11 +1,8 @@
 import Link from "next/link"
-import { Card } from "flowbite-react"
-
-import { Button, Timeline } from "flowbite-react"
+import { Card, Button} from "flowbite-react"
 import { truncateStr } from "../units"
 import { Flowbite } from "flowbite-react"
-import { getStyleObjectFromString } from "../units"
-
+ 
 export default function ListingCard(props) {
     const listing = props.listing
     const nftMetaData = props.nftMetaData

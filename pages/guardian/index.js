@@ -1,4 +1,3 @@
-import { ethers } from "ethers"
 import { useState, useEffect } from "react"
 import { useWeb3Contract } from "react-moralis"
 import { useQuery, gql } from "@apollo/client"
@@ -35,18 +34,15 @@ export default function Guardians() {
     const signer = useSelector((state) => state.app.signer)
     const auctionHouseAddress = useSelector((state) => state.app.auctionHouseAddress)
     const auctionHouseAbi = useSelector((state) => state.app.auctionHouseAbi)
-    const auctionNftAddress = useSelector((state) => state.app.auctionNftAddress)
-    const auctionNFTAbi = useSelector((state) => state.app.auctionNFTAbi)
     const { runContractFunction } = useWeb3Contract()
 
     const { loading, error, data } = useQuery(GET_GUARDIANS)
 
     // contract function params
-    const [guardianName, setGuardianName] = useState("")
-    const [guardianLocation, setGuardianLocation] = useState("")
+    // const [guardianName, setGuardianName] = useState("")
+    // const [guardianLocation, setGuardianLocation] = useState("")
     const [accountIsGuardian, setAccountIsGuardian] = useState(false)
-    const [guardianImageId, setGuardianImageId] = useState(0)
-
+ 
     async function getIsGuardian() {
         await runContractFunction({
             params: {
@@ -68,10 +64,10 @@ export default function Guardians() {
         if (signer) {
             getIsGuardian()
         }
-    }, [signer])
-
-    // console.log(data.guardians)
-    
+        if (error) {
+            console.log(error)
+        }
+    }, [signer, error])    
 
     return (
         <div className="relative flex mx-auto w-full transition-all duration-300 justify-center items-center p-3  h-auto">
@@ -114,8 +110,7 @@ export default function Guardians() {
                             >
                                 {!loading || data ? (
                                     data.guardians.map((guardian) => {
-                                        // guardianImageId += guardianImageId;
-                                        // setGuardianImageId(guardianImageId++);
+                                        
                                         console.log(guardian)
 
                                         return (

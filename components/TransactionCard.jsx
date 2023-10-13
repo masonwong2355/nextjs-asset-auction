@@ -1,16 +1,7 @@
+// useless
 import { Flowbite, Button, Modal, Timeline, Spinner } from "flowbite-react"
-import { HiCalendar } from "react-icons/hi"
-import { useState, useEffect } from "react"
 
-export default function TransactionCard(props) {
-    // let openModal = props.openModal
-
-    // const [openModal, setOpenModal] = useState(props.openModal)
-
-    // console.log(openModal)
-
-    // fixed top-0 right-0 left-0 z-50 h-modal h-screen overflow-y-auto overflow-x-hidden md:inset-0 md:h-full
-    // mt-20
+ export default function TransactionCard(props) {
     const modalTheme = {
         modal: {
             root: {

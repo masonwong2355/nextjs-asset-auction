@@ -17,8 +17,9 @@ RUN yarn install
 COPY . .
 
 # Build the Next.js application for production 
-RUN yarn run build
+# RUN yarn build
 # RUN npm run build
+RUN npm run build
 
 # Expose the port that your Next.js app will run on
 EXPOSE 3000
