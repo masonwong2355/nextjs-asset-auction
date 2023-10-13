@@ -4,16 +4,19 @@ export default function Footer() {
     return (
         <footer
             id="website-footer"
-            className="flex-1 relative z-10"
-            style={getStyleObjectFromString("color: rgb(17, 24, 39);")}
+            className="flex-1"
+            style={getStyleObjectFromString("color: rgb(17, 24, 39);background-color: rgb(233, 243, 243);")}
         >
-            <div className="absolute inset-0 pointer-events-none">
+            {/* <div className="inset-0 pointer-events-none">
                 <div
                     className="absolute inset-0 z-10"
                     style={getStyleObjectFromString("background-color: rgb(233, 243, 243);")}
                 ></div>
-            </div>
-            <div className="relative z-10 container mx-auto pt-12 lg:pt-14 xl:pt-20 pb-12 lg:pb-14 xl:pb-20">
+            </div> */}
+            <div className="relative container mx-auto pt-12 lg:pt-14 xl:pt-20 pb-12 lg:pb-14 xl:pb-20"
+                    // style={getStyleObjectFromString("background-color: rgb(233, 243, 243);")}
+                    >
+                        
                 <div className="flex flex-col justify-center gap-12 text-center">
                     <div className="flex flex-col items-center gap-6">
                         <div className="max-w-full overflow-hidden grid">

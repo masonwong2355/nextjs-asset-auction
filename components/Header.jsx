@@ -99,7 +99,7 @@ export default function Header() {
                         <div className="hidden lg:flex item-center justify-end gap-10 lg:col-span-2">
                             <div className="hidden lg:flex items-center ">
                                 <ConnectButton
-                                    className="button xl !text-2xl !py-1.5"
+                                    className="button xl !text-2xl !py-1.5 z-50"
                                     style={getStyleObjectFromString(
                                         "border-width: 2px; border-style: solid; box-shadow: none; background-color: rgb(34, 75, 141); color: rgb(255, 255, 255); border-radius: 8px; border-color: rgb(34, 75, 141);"
                                     )}

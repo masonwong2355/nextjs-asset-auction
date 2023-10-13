@@ -10,7 +10,7 @@ export default function GudianCard(props) {
             <div className="img-wrapper">
                 <img
                     className="cover-img"
-                    src={`images/guardians/${guardian.guardian}.jpg`}
+                    src={`../images/guardians/${guardian.guardian}.jpg`}
                     alt="Short Ribs Pappardelle"
                 />
             </div>
@@ -25,7 +25,7 @@ export default function GudianCard(props) {
                     <div className="price">
                         <img
                             className=""
-                            src={`images/location/${guardian.guardian}.png`}
+                            src={`../images/location/${guardian.guardian}.png`}
                             alt="flag"
                             style={getStyleObjectFromString("width: 1em;")}
                         />

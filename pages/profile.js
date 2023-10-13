@@ -61,7 +61,7 @@ export default function Home() {
     return (
         <div className="container mx-auto m-3">
             <div className="flex flex-wrap">
-                <h3 className="py-4 px-4 font-bold text-2xl">My Profit: {proceeds}</h3>
+                <h3 className="py-4 px-4 font-bold text-2xl">My Profit: test {proceeds}</h3>
 
                 {proceeds > 0 ? (
                     <Button onClick={handleWithdraw} text="Withdraw Proceeds" type="button" />

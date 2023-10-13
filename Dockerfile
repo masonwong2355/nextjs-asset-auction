@@ -10,8 +10,6 @@ COPY package*.json yarn.lock ./
 
 # Install project dependencies
 RUN yarn global add node-gyp
-
-
 RUN yarn install
 # RUN npm install
 

@@ -28,7 +28,7 @@ export default function ListingCard(props) {
     return (
         <div className="mt-3">
             <Flowbite theme={{ theme: cardTheme }}>
-                <Link legacyBehavior passHref href={`/listing/${listing.id}`}>
+                <Link legacyBehavior href={`/listing/${listing.id}`} passHref>
                     {/* hover:bg-gray-200 */}
 
                     <Card
