@@ -2,32 +2,15 @@ import { useState, useEffect } from "react"
 import { useWeb3Contract } from "react-moralis"
 import { useQuery, gql } from "@apollo/client"
 import { useSelector } from "react-redux"
-import { getStyleObjectFromString } from "../../units"
-import GudianCard from "../../components/GudianCard"
 import Link from "next/link"
-import { Button, Table } from "flowbite-react"
+import { Button } from "flowbite-react"
 import { GiCrescentBlade } from "react-icons/gi"
 import { FaUserLock } from "react-icons/fa"
-import Loading from "../../components/Loading"
 
-const GET_GUARDIANS = gql`
-    {
-        guardians {
-            id
-            guardian
-            name
-            location
-            stacking
-            auctionNft {
-                id
-                mintAt
-                tokenId
-                owner
-                tokenUri
-            }
-        }
-    }
-`
+import Loading from "../../components/Loading"
+import { GET_GUARDIANS } from "../../constants/gql"
+import { getStyleObjectFromString } from "../../units"
+import GudianCard from "../../components/GudianCard"
 
 export default function Guardians() {
     // web3 param
@@ -42,7 +25,17 @@ export default function Guardians() {
     // const [guardianName, setGuardianName] = useState("")
     // const [guardianLocation, setGuardianLocation] = useState("")
     const [accountIsGuardian, setAccountIsGuardian] = useState(false)
- 
+
+    useEffect(() => {
+        if (signer) {
+            getIsGuardian()
+        }
+        if (error) {
+            console.log(error)
+        }
+    }, [signer, error])
+
+    // ------------------------------------------------------------------------
     async function getIsGuardian() {
         await runContractFunction({
             params: {
@@ -59,15 +52,6 @@ export default function Guardians() {
             },
         })
     }
-
-    useEffect(() => {
-        if (signer) {
-            getIsGuardian()
-        }
-        if (error) {
-            console.log(error)
-        }
-    }, [signer, error])    
 
     return (
         <div className="relative flex mx-auto w-full transition-all duration-300 justify-center items-center p-3  h-auto">
@@ -110,14 +94,12 @@ export default function Guardians() {
                             >
                                 {!loading || data ? (
                                     data.guardians.map((guardian) => {
-                                        
                                         console.log(guardian)
 
                                         return (
                                             <GudianCard
                                                 key={guardian.id}
                                                 guardian={guardian}
-                                                imageId={guardianImageId}
                                             ></GudianCard>
                                         )
                                     })

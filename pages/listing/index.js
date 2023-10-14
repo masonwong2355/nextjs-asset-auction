@@ -4,36 +4,24 @@ import { useWeb3Contract } from "react-moralis"
 import { useQuery, gql } from "@apollo/client"
 import { useSelector } from "react-redux"
 import { React, useNotification } from "web3uikit"
-import { Button, Label, Modal, Radio } from "flowbite-react"
-import { Flowbite } from "flowbite-react"
+import { Flowbite, Button, Label, Modal, Radio } from "flowbite-react"
+import { MdEditNote } from "react-icons/md"
+
 import ListingCard from "../../components/ListingCard"
 import Loading from "../../components/Loading"
-import { MdEditNote } from "react-icons/md"
 import RecordNotFound from "../../components/RecordNotFound"
+import { GET_LISTINGS } from "../../constants/gql"
+import { nowTime, dateStringConvertTimestamp, handleNewNotification } from "../../units"
 
-const GET_LISTINGS = gql`
-    query GetListing($status: [String!]!) {
-        listings(where: { status_in: $status }) {
-            id
-            buyer
-            seller
-            price
-            netPrice
-            startAt
-            endAt
-            status
-            auctionNft {
-                tokenId
-                tokenUri
-            }
-            bids(first: 1, orderDirection: desc, orderBy: blockTimestamp) {
-                bidPrice
-                blockTimestamp
-                buyer
-            }
-        }
-    }
-`
+const custTheme = {
+    modal: {
+        root: {
+            show: {
+                on: "flex pt-20 bg-gray-900 bg-opacity-10 ",
+            },
+        },
+    },
+}
 
 export default function Home() {
     // web3 param
@@ -42,6 +30,9 @@ export default function Home() {
     const auctionHouseAddress = useSelector((state) => state.app.auctionHouseAddress)
     const auctionHouseAbi = useSelector((state) => state.app.auctionHouseAbi)
     const { runContractFunction } = useWeb3Contract()
+    const dispatch = useNotification()
+    const [openModal, setOpenModal] = useState()
+    const props = { openModal, setOpenModal }
 
     // form variable
     const [tokenId, setTokenId] = useState(0)
@@ -67,44 +58,9 @@ export default function Home() {
     const { data, loading, error } = useQuery(GET_LISTINGS, {
         variables: { status: selectedAuctionStatus },
     })
-    // console.log(loading, data)
 
-    const handleSelectedAuctionStatus = (e) => {
-        setListings([])
-        setAuctionNftData({})
-
-        if (e.target.value == "all") {
-            setSelectedAuctionStatus(defaultStatus)
-            return
-        }
-        setSelectedAuctionStatus([e.target.value])
-    }
-
-    async function getAuctionNftData() {
-        if (listings) {
-            listings.map(async (listing) => {
-                try {
-                    if (listing.auctionNft.tokenUri.includes("https://example.com")) {
-                        return
-                    }
-
-                    const response = await fetch(listing.auctionNft.tokenUri)
-
-                    if (!response.ok) {
-                        console.error("Failed fetch data")
-                    }
-
-                    const jsonData = await response.json()
-                    setAuctionNftData((prevState) => ({
-                        ...prevState,
-                        [listing.id]: jsonData,
-                    }))
-                } catch (err) {
-                    console.error("Unable fetch data", err)
-                }
-            })
-        }
-    }
+    // modlal
+    useEffect(() => {}, [signer])
 
     useEffect(() => {
         getAuctionNftData()
@@ -121,7 +77,17 @@ export default function Home() {
 
     // ------------------------------------------------------------------------
 
-    // listing function
+    const handleSelectedAuctionStatus = (e) => {
+        setListings([])
+        setAuctionNftData({})
+
+        if (e.target.value == "all") {
+            setSelectedAuctionStatus(defaultStatus)
+            return
+        }
+        setSelectedAuctionStatus([e.target.value])
+    }
+
     const handleSubmitListing = async (event) => {
         event.preventDefault()
         // validation
@@ -130,15 +96,32 @@ export default function Home() {
         listAssert()
     }
 
-    const dispatch = useNotification()
+    // ------------------------------------------------------------------------
+    async function getAuctionNftData() {
+        if (!listings) {
+            return null
+        }
 
-    const handleNewNotification = (type, title, message, icon) => {
-        dispatch({
-            type,
-            message: message,
-            title: title,
-            icon: icon,
-            position: "topR",
+        listings.map(async (listing) => {
+            try {
+                if (listing.auctionNft.tokenUri.includes("https://example.com")) {
+                    return
+                }
+
+                const response = await fetch(listing.auctionNft.tokenUri)
+
+                if (!response.ok) {
+                    console.error("Failed fetch data")
+                }
+
+                const jsonData = await response.json()
+                setAuctionNftData((prevState) => ({
+                    ...prevState,
+                    [listing.id]: jsonData,
+                }))
+            } catch (err) {
+                console.error("Unable fetch data", err)
+            }
         })
     }
 
@@ -158,44 +141,15 @@ export default function Home() {
             },
             onSuccess: (result) => {
                 setOpenModal(undefined)
-                handleNewNotification("info", "Transaction proccessing")
+
+                handleNewNotification(dispatch, "info", "Transaction proccessing")
             },
             onError: (error) => {
-                handleNewNotification("error", "Transaction Error")
+                handleNewNotification(dispatch, "error", "Transaction Error")
                 console.log(error)
             },
         })
     }
-
-    function nowTime() {
-        const now = new Date()
-        const twoMinutesLater = new Date(now.getTime() + 2 * 60 * 1000)
-
-        return Math.floor(twoMinutesLater.getTime() / 1000)
-    }
-
-    function dateStringConvertTimestamp(dateString) {
-        const [datePart, timePart] = dateString.split(", ")
-        const [day, month, year] = datePart.split("/")
-        const [hour, minute, second] = timePart.split(":")
-        const date = new Date(year, month - 1, day, hour, minute)
-        return Math.floor(date.getTime() / 1000)
-    }
-
-    // modlal
-    const [openModal, setOpenModal] = useState()
-    const props = { openModal, setOpenModal }
-    const modalTheme = {
-        modal: {
-            root: {
-                show: {
-                    on: "flex pt-20 bg-gray-900 bg-opacity-10 ",
-                },
-            },
-        },
-    }
-
-    useEffect(() => {}, [signer])
 
     return (
         <div className="container mx-auto m-3">
@@ -284,7 +238,7 @@ export default function Home() {
             </div>
 
             {/* Modal */}
-            <Flowbite theme={{ theme: modalTheme }}>
+            <Flowbite theme={{ theme: custTheme }}>
                 <Modal
                     show={props.openModal === "form-elements"}
                     size={"3xl"}

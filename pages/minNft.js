@@ -5,14 +5,18 @@ import { useSelector } from "react-redux"
 import { useWeb3Contract } from "react-moralis"
 import { useNotification } from "web3uikit"
 
+import { handleNewNotification } from "../units"
+
 export default function MintingAuctionNftForm() {
     const auctionNftAddress = useSelector((state) => state.app.auctionNftAddress)
     const auctionNFTAbi = useSelector((state) => state.app.auctionNFTAbi)
     const { runContractFunction } = useWeb3Contract()
+    const dispatch = useNotification()
 
     const [nftOwner, setNftOwner] = useState("")
     const [assetType, setAssetType] = useState("") // Empty string as default
 
+    // ------------------------------------------------------------------------
     const handleMintNft = async (tokenUri) => {
         await runContractFunction({
             params: {
@@ -25,31 +29,14 @@ export default function MintingAuctionNftForm() {
                 },
             },
             onSuccess: () => {
-                handleNewNotification("info", "Transaction proccessing")
+                handleNewNotification(dispatch, "info", "Transaction proccessing")
             },
             onError: (error) => {
-                handleNewNotification("error", "Transaction Error")
+                handleNewNotification(dispatch, "error", "Transaction Error")
                 console.log(error)
             },
         })
     }
-
-    const dispatch = useNotification()
-
-    const handleNewNotification = (type, title, message, icon) => {
-        dispatch({
-            type,
-            message: message,
-            title: title,
-            icon: icon,
-            position: "topR",
-        })
-    }
-
-    // useEffect(() => {
-    //     console.log("auctionNftAddress", auctionHouseAddress)
-    //     console.log("auctionNFTAbi", auctionNFTAbi)
-    // }, [auctionNftAddress])
 
     return (
         <div className="container mx-auto mt-10 p-6 bg-white shadow-md rounded-md">

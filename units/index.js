@@ -84,14 +84,42 @@ const truncateStr = (fullStr, strLen) => {
     )
 }
 
+function nowTime() {
+    const now = new Date()
+    const twoMinutesLater = new Date(now.getTime() + 2 * 60 * 1000)
+
+    return Math.floor(twoMinutesLater.getTime() / 1000)
+}
+
+function dateStringConvertTimestamp(dateString) {
+    const [datePart, timePart] = dateString.split(", ")
+    const [day, month, year] = datePart.split("/")
+    const [hour, minute, second] = timePart.split(":")
+    const date = new Date(year, month - 1, day, hour, minute)
+    return Math.floor(date.getTime() / 1000)
+}
+
 // const imageContext = require.context("../assets/images/guardian", false, /\.(png|jpe?g)$/)
 // export function getAllWarehouseImages() {
 //     return imageContext.keys().map(imageContext)
 // }
+
+const handleNewNotification = (dispatch, type, title, message, icon) => {
+    dispatch({
+        type,
+        message: message,
+        title: title,
+        icon: icon,
+        position: "topR",
+    })
+}
 
 module.exports = {
     getStyleObjectFromString,
     uploadFileToIpfs,
     uploadJsonToIpfs,
     truncateStr,
+    nowTime,
+    dateStringConvertTimestamp,
+    handleNewNotification,
 }

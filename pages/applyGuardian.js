@@ -5,22 +5,29 @@ import { ethers } from "ethers"
 import { FileInput, Label, Button } from "flowbite-react"
 import { useNotification } from "web3uikit"
 
+import { handleNewNotification } from "../units"
+
 const ApplyGuardian = () => {
     const auctionHouseAddress = useSelector((state) => state.app.auctionHouseAddress)
     const auctionHouseAbi = useSelector((state) => state.app.auctionHouseAbi)
     const { runContractFunction } = useWeb3Contract()
     const stackingAmound = ethers.utils.parseEther("0.001")
+    const [formData, setFormData] = useState({
+        name: "GGood",
+        location: "Korea",
+        stackingAmound: stackingAmound,
+    })
 
     const dispatch = useNotification()
 
-    const handleNewNotification = (type, title, message, icon) => {
-        dispatch({
-            type,
-            message: message,
-            title: title,
-            icon: icon,
-            position: "topR",
-        })
+    // ------------------------------------------------------------------------
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value })
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        handleApplyGuardian()
     }
 
     async function handleApplyGuardian() {
@@ -36,28 +43,13 @@ const ApplyGuardian = () => {
                 msgValue: formData.stackingAmound,
             },
             onSuccess: (result) => {
-                handleNewNotification("info", "Transaction proccessing")
+                handleNewNotification(dispatch, "info", "Transaction proccessing")
             },
             onError: (error) => {
-                handleNewNotification("error", "Transaction Error")
+                handleNewNotification(dispatchm, "error", "Transaction Error")
                 console.log(error)
             },
         })
-    }
-
-    const [formData, setFormData] = useState({
-        name: "GGood",
-        location: "Korea",
-        stackingAmound: stackingAmound,
-    })
-
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value })
-    }
-
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        handleApplyGuardian()
     }
 
     return (

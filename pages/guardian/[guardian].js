@@ -2,35 +2,16 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { useQuery, gql } from "@apollo/client"
 import { Card } from "flowbite-react"
-
-import { Avatar } from "flowbite-react"
-import bg from "/assets/images/bg.jpeg"
-import ethLogo from "/assets/images/ethereum-eth-logo.svg"
-import maticLogo from "/assets/images/polygon-matic-logo.svg"
-import { truncateStr } from "../../units"
-import { Flowbite } from "flowbite-react"
+import { Flowbite, Avatar } from "flowbite-react"
 import Link from "next/link"
 
+import bg from "/assets/images/bg.jpeg"
+import ethLogo from "/assets/images/ethereum-eth-logo.svg"
+// import maticLogo from "/assets/images/polygon-matic-logo.svg"
+import { truncateStr } from "../../units"
 import Loading from "../../components/Loading"
 import RecordNotFound from "../../components/RecordNotFound"
-
-const GET_GUARDIAN = gql(/* GraphQL */ `
-    query GetGuardian($id: String!) {
-        guardian(id: $id) {
-            id
-            name
-            location
-            stacking
-            auctionNft {
-                id
-                mintAt
-                owner
-                tokenId
-                tokenUri
-            }
-        }
-    }
-`)
+import { GET_GUARDIAN } from "../../constants/gql"
 
 function useGuardianDetail() {
     const router = useRouter()
@@ -55,28 +36,17 @@ function useGuardianDetail() {
     return [data, guardian]
 }
 
+const cardTheme = {
+    card: {
+        img: {
+            base: "h-60 object-cover",
+        },
+    },
+}
+
 export default function GuardianDetail() {
     const [data, guardian] = useGuardianDetail()
-
-    // const router = useRouter()
-    // const guardianId = router.query.guardian
     const [auctionNftData, setAuctionNftData] = useState({})
-    // const [guardian, setGuardian] = useState()
-
-    // const { loading, error, data } = useQuery(GET_GUARDIAN, {
-    //     variables: { id: guardianId },
-    //     skip: !guardianId,
-    // })
-
-    // useEffect(() => {
-    //     if (data) {
-    //         setGuardian(data.guardian)
-    //     }
-
-    //     if (error) {
-    //         console.log(error)
-    //     }
-    // }, [data, error])
 
     useEffect(() => {
         if (guardian) {
@@ -84,6 +54,7 @@ export default function GuardianDetail() {
         }
     }, [guardian])
 
+    // ------------------------------------------------------------------------
     async function getAuctionNftData() {
         if (guardian.auctionNft) {
             guardian.auctionNft.map(async (nft) => {
@@ -105,14 +76,6 @@ export default function GuardianDetail() {
                 }
             })
         }
-    }
-
-    const cardTheme = {
-        card: {
-            img: {
-                base: "h-60 object-cover",
-            },
-        },
     }
 
     return (
@@ -146,7 +109,9 @@ export default function GuardianDetail() {
                                 </Avatar>
                             </div>
                         </div>
-                        <div className="min-w-0 flex-1">
+
+                        {/* TODO: Add newtork */}
+                        {/* <div className="min-w-0 flex-1">
                             <div className="truncate text-sm font-medium text-gray-500 dark:text-gray-400">
                                 Chain Supported
                             </div>
@@ -164,11 +129,11 @@ export default function GuardianDetail() {
                                     size="xs"
                                 ></Avatar>
                             </div>
-                        </div>
+                        </div> */}
 
                         <hr></hr>
 
-                        <div className="min-w-0 flex-1">
+                        {/* <div className="min-w-0 flex-1">
                             <div className="truncate text-sm font-medium text-gray-500 dark:text-gray-400">
                                 Ethereum
                             </div>
@@ -181,7 +146,7 @@ export default function GuardianDetail() {
                             <div className="flex truncate text-sm text-gray-900 dark:text-white">
                                 0x2D478a26CF0e2fF4455c280ee7E6FE6Ef73cf850
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                     <div className="col-span-3">
                         <h2 className="truncate text-xl text-gray-900">Asset</h2>

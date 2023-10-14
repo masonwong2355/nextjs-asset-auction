@@ -1,17 +1,9 @@
+import Link from "next/link"
+
 import bg from "../assets/images/bg.jpeg"
-import { useMoralis } from "react-moralis"
 import { getStyleObjectFromString } from "../units"
 
-import Link from "next/link"
-// import TransactionCard from "../components/TransactionCard"
-
 export default function Home() {
-    const { isWeb3Enabled, chainId } = useMoralis()
-    // const { loading, error, data: listedNfts } = useQuery(GET_ACTIVE_ITEMS);
-    const chainString = chainId ? parseInt(chainId).toString() : "31337"
-    const loading = false
-    // const [openModal, setOpenModal] = useState(undefined)
-
     return (
         <div className="">
             <section
@@ -71,15 +63,6 @@ export default function Home() {
                     </div>
                 </div>
             </section>
-            {/* 
-            <h1 className="py-4 px-4 font-bold text-2xl">Recently Listed</h1>
-            <div className="flex flex-wrap">
-                {isWeb3Enabled && chainId ? (
-                    <div>Home page</div>
-                ) : (
-                    <div>Web3 Currently Not Enabled</div>
-                )}
-            </div> */}
         </div>
     )
 }

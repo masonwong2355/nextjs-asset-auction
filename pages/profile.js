@@ -4,6 +4,8 @@ import { Button } from "web3uikit"
 import { useSelector, useDispatch } from "react-redux"
 import { useNotification } from "web3uikit"
 
+import { handleNewNotification } from "../units"
+
 export default function Home() {
     // web3 param
     const signer = useSelector((state) => state.app.signer)
@@ -13,6 +15,7 @@ export default function Home() {
     const auctionNftAddress = useSelector((state) => state.app.auctionNftAddress)
     const auctionNFTAbi = useSelector((state) => state.app.auctionNFTAbi)
     const { runContractFunction } = useWeb3Contract()
+    const dispatch = useNotification()
 
     // variable
     const [proceeds, setProceeds] = useState()
@@ -23,18 +26,13 @@ export default function Home() {
         setProceeds(proceeds.toNumber())
     }
 
-    const dispatch = useNotification()
+    useEffect(() => {
+        if (signer) {
+            getProceeds()
+        }
+    }, [signer])
 
-    const handleNewNotification = (type, title, message, icon) => {
-        dispatch({
-            type,
-            message: message,
-            title: title,
-            icon: icon,
-            position: "topR",
-        })
-    }
-
+    // ------------------------------------------------------------------------
     async function handleWithdraw() {
         await runContractFunction({
             params: {
@@ -42,23 +40,14 @@ export default function Home() {
                 contractAddress: auctionHouseAddress,
                 functionName: "withdrawProceeds",
             },
-            onSuccess: (result) => handleNewNotification("info", "Transaction proccessing"),
+            onSuccess: (result) =>
+                handleNewNotification(dispatch, "info", "Transaction proccessing"),
             onError: (error) => {
-                handleNewNotification("error", "Transaction Error")
+                handleNewNotification(dispatch, "error", "Transaction Error")
                 console.log(error)
             },
         })
     }
-
-    console.log(process.env.NEXT_PUBLIC_SUBGRAPH_URL)
-
-    const loading = false
-
-    useEffect(() => {
-        if (signer) {
-            getProceeds()
-        }
-    }, [signer])
 
     return (
         <div className="container mx-auto m-3">

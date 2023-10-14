@@ -1,45 +1,36 @@
 import { useRouter } from "next/router"
 import { useState, useEffect } from "react"
-import { useQuery, gql } from "@apollo/client"
+import { useQuery } from "@apollo/client"
 import { useSelector } from "react-redux"
 import { React } from "web3uikit"
-import bg from "../../assets/images/bg.jpeg"
-import { getStyleObjectFromString } from "../../units"
-import { Avatar } from "flowbite-react"
-import Loading from "../../components/Loading"
-import { Flowbite, Button, Modal, Banner, Label, TextInput, Table } from "flowbite-react"
+import { Flowbite, Button, Label, TextInput, Table, Avatar } from "flowbite-react"
 import { useWeb3Contract } from "react-moralis"
 import Link from "next/link"
 import { useNotification } from "web3uikit"
 
-const GET_LISTING = gql(/* GraphQL */ `
-    query GetListing($id: String!) {
-        listing(id: $id) {
-            id
-            buyer
-            seller
-            price
-            netPrice
-            startAt
-            endAt
-            status
-            auctionNft {
-                tokenId
-                tokenUri
-            }
-            guardian {
-                id
-                location
-                name
-            }
-            bids(first: 1, orderDirection: desc, orderBy: blockTimestamp) {
-                bidPrice
-                blockTimestamp
-                buyer
-            }
-        }
-    }
-`)
+import bg from "../../assets/images/bg.jpeg"
+import { getStyleObjectFromString, handleNewNotification } from "../../units"
+import Loading from "../../components/Loading"
+import { GET_LISTING } from "../../constants/gql"
+
+const custTheme = {
+    avatar: {
+        root: { base: "flex justify-start items-center space-x-4 rounded" },
+    },
+    modal: {
+        root: {
+            base: "fixed top-0 right-0 left-0 z-50 h-modal h-screen overflow-y-auto overflow-x-hidden md:inset-0 md:h-full",
+            show: {
+                on: "flex mt-20 bg-gray-900 bg-opacity-10 ",
+            },
+        },
+    },
+    table: {
+        root: {
+            shadow: "absolute w-full h-full top-0 left-0 rounded-lg drop-shadow-md -z-10",
+        },
+    },
+}
 
 export default function ListingDetail() {
     const router = useRouter()
@@ -62,6 +53,27 @@ export default function ListingDetail() {
         skip: !listingId,
     })
 
+    useEffect(() => {
+        if (listing) {
+            getAuctionNftData()
+            setStartAt(new Date(parseInt(listing.startAt)))
+            setEndAt(new Date(parseInt(listing.endAt)))
+        }
+    }, [listing])
+
+    useEffect(() => {
+        if (data && data.listing) {
+            setListing(data.listing)
+        }
+    }, [data])
+
+    // ------------------------------------------------------------------------
+    const handleSubmitBid = (event) => {
+        event.preventDefault()
+        bid()
+    }
+
+    // ------------------------------------------------------------------------
     async function getAuctionNftData() {
         try {
             if (listing.auctionNft.tokenUri.includes("https://example.com")) {
@@ -81,54 +93,6 @@ export default function ListingDetail() {
         }
     }
 
-    useEffect(() => {
-        if (listing) {
-            getAuctionNftData()
-            setStartAt(new Date(parseInt(listing.startAt)))
-            setEndAt(new Date(parseInt(listing.endAt)))
-        }
-    }, [listing])
-
-    useEffect(() => {
-        if (data && data.listing) {
-            setListing(data.listing)
-        }
-    }, [data])
-
-    const handleNewNotification = (type, title, message, icon) => {
-        dispatch({
-            type,
-            message: message,
-            title: title,
-            icon: icon,
-            position: "topR",
-        })
-    }
-
-    const avatarTheme = {
-        avatar: {
-            root: { base: "flex justify-start items-center space-x-4 rounded" },
-        },
-        modal: {
-            root: {
-                base: "fixed top-0 right-0 left-0 z-50 h-modal h-screen overflow-y-auto overflow-x-hidden md:inset-0 md:h-full",
-                show: {
-                    on: "flex mt-20 bg-gray-900 bg-opacity-10 ",
-                },
-            },
-        },
-        table: {
-            root: {
-                shadow: "absolute w-full h-full top-0 left-0 rounded-lg drop-shadow-md -z-10",
-            },
-        },
-    }
-
-    const handleSubmitBid = (event) => {
-        event.preventDefault()
-        bid()
-    }
-
     async function bid() {
         await runContractFunction({
             params: {
@@ -141,16 +105,14 @@ export default function ListingDetail() {
                 msgValue: bidPrice,
             },
             onSuccess: (result) => {
-                handleNewNotification("info", "Transaction proccessing")
+                handleNewNotification(dispatch, "info", "Transaction proccessing")
             },
             onError: (error) => {
-                handleNewNotification("error", "Transaction Error")
+                handleNewNotification(dispatch, "error", "Transaction Error")
                 console.log(error)
             },
         })
     }
-
-    // console.log(listing)
 
     return (
         <div className="container mx-auto">
@@ -186,7 +148,7 @@ export default function ListingDetail() {
                                 </div>
                             </div>
 
-                            <Flowbite theme={{ theme: avatarTheme }}>
+                            <Flowbite theme={{ theme: custTheme }}>
                                 <div className="flex-1 flex flex-col items-start">
                                     <div
                                         className="rich-text-block w-full"
