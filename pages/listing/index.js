@@ -5,7 +5,6 @@ import { useQuery, gql } from "@apollo/client"
 import { useSelector } from "react-redux"
 import { React, useNotification } from "web3uikit"
 import { Flowbite, Button, Label, Modal, Radio } from "flowbite-react"
-import { MdEditNote } from "react-icons/md"
 
 import ListingCard from "../../components/ListingCard"
 import Loading from "../../components/Loading"
@@ -158,7 +157,22 @@ export default function Home() {
                 <div className="justify-self-end">
                     <Button.Group>
                         <Button color="gray" onClick={() => props.setOpenModal("form-elements")}>
-                            <MdEditNote className="mr-3 h-4 w-4" />
+                            <svg
+                                className="w-6 h-6 mr-3 text-gray-800 dark:text-white"
+                                aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="18"
+                                height="20"
+                                fill="none"
+                                viewBox="0 0 18 20"
+                            >
+                                <path
+                                    stroke="currentColor"
+                                    strokeLinecap="round"
+                                    strokeWidth="2"
+                                    d="M12 2h4a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h4m6 0v3H6V2m6 0a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1M5 5h8m-5 5h5m-8 0h.01M5 14h.01M8 14h5"
+                                />
+                            </svg>
                             <p>Listing Token</p>
                         </Button>
                     </Button.Group>

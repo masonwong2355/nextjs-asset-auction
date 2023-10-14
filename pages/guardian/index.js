@@ -4,8 +4,6 @@ import { useQuery, gql } from "@apollo/client"
 import { useSelector } from "react-redux"
 import Link from "next/link"
 import { Button } from "flowbite-react"
-import { GiCrescentBlade } from "react-icons/gi"
-import { FaUserLock } from "react-icons/fa"
 
 import Loading from "../../components/Loading"
 import { GET_GUARDIANS } from "../../constants/gql"
@@ -18,13 +16,10 @@ export default function Guardians() {
     const auctionHouseAddress = useSelector((state) => state.app.auctionHouseAddress)
     const auctionHouseAbi = useSelector((state) => state.app.auctionHouseAbi)
     const { runContractFunction } = useWeb3Contract()
-
-    const { loading, error, data } = useQuery(GET_GUARDIANS)
-
-    // contract function params
-    // const [guardianName, setGuardianName] = useState("")
-    // const [guardianLocation, setGuardianLocation] = useState("")
     const [accountIsGuardian, setAccountIsGuardian] = useState(false)
+
+    // const error = null
+    const { loading, error, data } = useQuery(GET_GUARDIANS)
 
     useEffect(() => {
         if (signer) {
@@ -67,9 +62,16 @@ export default function Guardians() {
                         <div className="flex justify-self-end">
                             <Button.Group>
                                 <Link legacyBehavior href="/applyGuardian">
-                                    {/* onClick={handleApplyGuardian} */}
                                     <Button color="gray">
-                                        <FaUserLock className="mr-3 h-4 w-4" />
+                                        <svg
+                                            class="w-6 h-6 mr-3 text-gray-800 dark:text-white"
+                                            aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor"
+                                            viewBox="0 0 20 18"
+                                        >
+                                            <path d="M6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Zm11-3h-2V5a1 1 0 0 0-2 0v2h-2a1 1 0 1 0 0 2h2v2a1 1 0 0 0 2 0V9h2a1 1 0 1 0 0-2Z" />
+                                        </svg>
                                         <p>Apply Guardian</p>
                                     </Button>
                                 </Link>
@@ -77,7 +79,16 @@ export default function Guardians() {
                                 {accountIsGuardian ? (
                                     <Link legacyBehavior href="/minNft">
                                         <Button color="gray">
-                                            <GiCrescentBlade className="mr-3 h-4 w-4" />
+                                            <svg
+                                                class="w-6 h-6 mr-3  text-gray-800 dark:text-white"
+                                                aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="currentColor"
+                                                viewBox="0 0 20 20"
+                                            >
+                                                <path d="M9.546.5a9.5 9.5 0 1 0 9.5 9.5 9.51 9.51 0 0 0-9.5-9.5ZM13.788 11h-3.242v3.242a1 1 0 1 1-2 0V11H5.304a1 1 0 0 1 0-2h3.242V5.758a1 1 0 0 1 2 0V9h3.242a1 1 0 1 1 0 2Z" />
+                                            </svg>
+
                                             <p>Mint Nft</p>
                                         </Button>
                                     </Link>
@@ -94,8 +105,7 @@ export default function Guardians() {
                             >
                                 {!loading || data ? (
                                     data.guardians.map((guardian) => {
-                                        console.log(guardian)
-
+                                        // console.log(guardian)
                                         return (
                                             <GudianCard
                                                 key={guardian.id}
