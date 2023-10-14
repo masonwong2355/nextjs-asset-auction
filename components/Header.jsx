@@ -1,15 +1,31 @@
+import { useEffect } from "react"
+import { useMoralis } from "react-moralis"
+import { useDispatch } from "react-redux"
 import { ConnectButton } from "web3uikit"
 import Link from "next/link"
 
-import { useState, useEffect } from "react"
-import { useWeb3Contract, useMoralis } from "react-moralis"
-import { useQuery, gql } from "@apollo/client"
-import { auctionHouseAbi, auctionNFTAbi, networkMapping } from "../constants"
-import { Button } from "web3uikit"
-
-import { useSelector, useDispatch } from "react-redux"
 import { initState } from "../store/auctionHouseSlice"
 import { getStyleObjectFromString } from "../units"
+import { auctionHouseAbi, auctionNFTAbi, networkMapping } from "../constants"
+
+const pages = [
+    {
+        title: "Listing",
+        href: "/listing",
+    },
+    {
+        title: "Guardian",
+        href: "/guardian",
+    },
+    {
+        title: "Profile",
+        href: "/profile",
+    },
+    {
+        title: "About",
+        href: "/about",
+    },
+]
 
 export default function Header() {
     const { isWeb3Enabled, chainId, Moralis, web3: web3Provider } = useMoralis()
@@ -22,7 +38,6 @@ export default function Header() {
             const signer = web3Provider.getSigner()
             const ethers = Moralis.web3Library
 
-            console.log(chainId)
             // contract part
             const auctionHouseAddress = chainId
                 ? networkMapping[chainString].AuctionHouse[
@@ -56,19 +71,17 @@ export default function Header() {
         init()
     }, [web3Provider])
 
-    // "background-color: rgb(233, 243, 243); color: rgb(17, 24, 39);"
     return (
         <>
             <div
                 id="main-body"
                 className="min-h-full w-full flex flex-col smooth-scroll hyphen"
                 style={getStyleObjectFromString(
-                    "font-family:'Mulish', sans-serif;font-weight:300"
+                    "font-family:'Mulish', sans-serif;font-weight:500"
                 )}
             >
                 <header
                     id="website-header"
-                    // className="!z-[2000]"
                     style={getStyleObjectFromString(
                         "background-color: rgb(233, 243, 243);color: rgb(17, 24, 39);"
                     )}
@@ -111,61 +124,26 @@ export default function Header() {
                                 className="lg:flex hidden items-center flex-wrap gap-x-6 justify-end"
                                 style={getStyleObjectFromString("color: rgb(17, 24, 39);")}
                             >
-                                <li
-                                    className="border-b-2"
-                                    style={getStyleObjectFromString("border-color:transparent")}
-                                >
-                                    <Link legacyBehavior href="/listing">
-                                        <a
-                                            className="block py-1.5 body-normal whitespace-nowrap"
-                                            target="_self"
+                                {pages.map((page) => {
+                                    return (
+                                        <li
+                                            className="border-b-2"
+                                            style={getStyleObjectFromString(
+                                                "border-color:transparent"
+                                            )}
+                                            key={page.title}
                                         >
-                                            Listing
-                                        </a>
-                                    </Link>
-                                </li>
-
-                                <li
-                                    className="border-b-2"
-                                    style={getStyleObjectFromString("border-color:transparent")}
-                                >
-                                    <Link legacyBehavior href="/guardian/">
-                                        <a
-                                            className="block py-1.5 body-normal whitespace-nowrap"
-                                            target="_self"
-                                        >
-                                            Guadians
-                                        </a>
-                                    </Link>
-                                </li>
-
-                                <li
-                                    className="border-b-2"
-                                    style={getStyleObjectFromString("border-color:transparent")}
-                                >
-                                    <Link legacyBehavior href="/profile">
-                                        <a
-                                            className="block py-1.5 body-normal whitespace-nowrap"
-                                            target="_self"
-                                        >
-                                            Profile
-                                        </a>
-                                    </Link>
-                                </li>
-
-                                <li
-                                    className="border-b-2"
-                                    style={getStyleObjectFromString("border-color:transparent")}
-                                >
-                                    <Link legacyBehavior href="/about">
-                                        <a
-                                            className="block py-1.5 body-normal whitespace-nowrap"
-                                            target="_self"
-                                        >
-                                            About
-                                        </a>
-                                    </Link>
-                                </li>
+                                            <Link legacyBehavior href={page.href}>
+                                                <a
+                                                    className="block py-1.5 body-normal whitespace-nowrap"
+                                                    target="_self"
+                                                >
+                                                    {page.title}
+                                                </a>
+                                            </Link>
+                                        </li>
+                                    )
+                                })}
                             </ul>
                         </div>
 

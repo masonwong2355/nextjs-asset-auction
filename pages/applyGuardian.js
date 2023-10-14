@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { useWeb3Contract } from "react-moralis"
 import { ethers } from "ethers"
@@ -8,17 +8,30 @@ import { useNotification } from "web3uikit"
 import { handleNewNotification } from "../units"
 
 const ApplyGuardian = () => {
+    const signer = useSelector((state) => state.app.signer)
+    const auctionHouse = useSelector((state) => state.app.auctionHouse)
     const auctionHouseAddress = useSelector((state) => state.app.auctionHouseAddress)
     const auctionHouseAbi = useSelector((state) => state.app.auctionHouseAbi)
     const { runContractFunction } = useWeb3Contract()
     const stackingAmound = ethers.utils.parseEther("0.001")
     const [formData, setFormData] = useState({
-        name: "GGood",
-        location: "Korea",
+        name: "Pro Gurardian",
+        location: "USA",
         stackingAmound: stackingAmound,
     })
+    const [minStackingAmount, setMinStackingAmount] = useState(0)
 
     const dispatch = useNotification()
+
+    useEffect(() => {
+        if (signer) {
+            getminStackingAmount()
+        }
+    }, [signer])
+    // ------------------------------------------------------------------------
+    async function getminStackingAmount() {
+        setMinStackingAmount((await auctionHouse.s_minStackingValue()).toNumber())
+    }
 
     // ------------------------------------------------------------------------
     const handleChange = (e) => {
@@ -27,8 +40,13 @@ const ApplyGuardian = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+
+        // TODO
+        // handleUploadImage()
         handleApplyGuardian()
     }
+
+    async function handleUploadImage() {}
 
     async function handleApplyGuardian() {
         await runContractFunction({
@@ -84,6 +102,9 @@ const ApplyGuardian = () => {
                     <div className="mb-4">
                         <label className="block text-sm font-medium mb-2">
                             Stacking Amount (Wei):
+                        </label>
+                        <label className="block text-xs font-medium mb-2">
+                            minimum staking amount {minStackingAmount}
                         </label>
                         <input
                             name="stackingAmound"

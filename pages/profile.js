@@ -20,17 +20,17 @@ export default function Home() {
     // variable
     const [proceeds, setProceeds] = useState()
 
-    // functions
-    async function getProceeds() {
-        const proceeds = await auctionHouse.s_proceeds(await signer.getAddress())
-        setProceeds(proceeds.toNumber())
-    }
-
     useEffect(() => {
         if (signer) {
             getProceeds()
         }
     }, [signer])
+
+    // ------------------------------------------------------------------------
+    async function getProceeds() {
+        const proceeds = await auctionHouse.s_proceeds(await signer.getAddress())
+        setProceeds(proceeds.toNumber())
+    }
 
     // ------------------------------------------------------------------------
     async function handleWithdraw() {
