@@ -64,7 +64,7 @@ export default function Guardians() {
                                 <Link legacyBehavior href="/applyGuardian">
                                     <Button color="gray">
                                         <svg
-                                            class="w-6 h-6 mr-3 text-gray-800 dark:text-white"
+                                            className="w-6 h-6 mr-3 text-gray-800 dark:text-white"
                                             aria-hidden="true"
                                             xmlns="http://www.w3.org/2000/svg"
                                             fill="currentColor"
@@ -80,7 +80,7 @@ export default function Guardians() {
                                     <Link legacyBehavior href="/minNft">
                                         <Button color="gray">
                                             <svg
-                                                class="w-6 h-6 mr-3  text-gray-800 dark:text-white"
+                                                className="w-6 h-6 mr-3  text-gray-800 dark:text-white"
                                                 aria-hidden="true"
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 fill="currentColor"
