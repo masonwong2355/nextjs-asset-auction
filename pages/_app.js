@@ -1,13 +1,12 @@
-import "../styles/globals.css"
-
-import { store } from "../store/store"
 import { Provider } from "react-redux"
-
 import { MoralisProvider } from "react-moralis"
 import { NotificationProvider } from "web3uikit"
-import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client"
-import Header from "../components/Header"
+import { ApolloProvider, ApolloClient, InMemoryCache, HttpLink } from "@apollo/client"
 import Head from "next/head"
+
+import Header from "../components/Header"
+import "../styles/globals.css"
+import { store } from "../store/store"
 import Footer from "../components/Footer"
 import logo from "/assets/images/logo.svg"
 

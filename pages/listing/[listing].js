@@ -3,14 +3,14 @@ import { useState, useEffect } from "react"
 import { useQuery } from "@apollo/client"
 import { useSelector } from "react-redux"
 import { React } from "web3uikit"
-import { Flowbite, Button, Label, TextInput, Table, Avatar } from "flowbite-react"
+import { Flowbite, Button, Label, TextInput } from "flowbite-react"
 import { useWeb3Contract } from "react-moralis"
 import Link from "next/link"
-import { useNotification } from "web3uikit"
+import { useNotification, Blockie } from "web3uikit"
 
-import bg from "../../assets/images/bg.jpeg"
 import { getStyleObjectFromString, handleNewNotification } from "../../units"
 import Loading from "../../components/Loading"
+import BidTable from "../../components/BidTable"
 import { GET_LISTING } from "../../constants/gql"
 
 const custTheme = {
@@ -118,12 +118,12 @@ export default function ListingDetail() {
         <div className="container mx-auto">
             {listing && auctionNft ? (
                 <div
-                    className="flex flex-none flex-shrink-0 relative z-10 items-center"
+                    className="flex flex-none flex-shrink-0 relative items-center"
                     style={getStyleObjectFromString(
                         "min-height: calc(100vh - 96px); min-weigth: calc(100vh - 96px);"
                     )}
                 >
-                    <div className="relative z-10 container mx-auto pt-8 lg:pt-12 pb-8 lg:pb-12">
+                    <div className="relative container mx-auto pt-8 lg:pt-12 pb-8 lg:pb-12">
                         <div className="flex flex-col lg:flex-row w-full gap-10 lg:gap-20">
                             {/* image */}
                             <div className="flex-1 flex w-full justify-center lg:justify-start">
@@ -135,7 +135,6 @@ export default function ListingDetail() {
                                     >
                                         <img
                                             alt="We provide high quality services"
-                                            // src={bg.src}
                                             src={auctionNft.imageCID}
                                             decoding="async"
                                             data-nimg="fill"
@@ -158,19 +157,15 @@ export default function ListingDetail() {
                                         <hr></hr>
 
                                         <div className="space-y-1 font-medium dark:text-white justify-self-start">
-                                            <Avatar
-                                                img={bg.src}
-                                                className="justify-self-start"
-                                                rounded
-                                            >
-                                                <div className="space-y-1 font-medium dark:text-white">
-                                                    <div>Owner</div>
+                                            <div className="space-y-1 font-medium dark:text-white">
+                                                <div>Owner</div>
 
-                                                    <div className="text-sm text-gray-500 dark:text-gray-400">
-                                                        {listing.seller}
-                                                    </div>
+                                                <div className="text-m text-gray-500 dark:text-gray-400">
+                                                    <Blockie seed={listing.seller}></Blockie>{" "}
+                                                    {listing.seller}
                                                 </div>
-                                            </Avatar>
+                                            </div>
+                                            {/* </Avatar> */}
                                         </div>
 
                                         <hr></hr>
@@ -347,64 +342,12 @@ export default function ListingDetail() {
 
                                                 <div className="flex mb-3">
                                                     <div className="flex-auto">
-                                                        <Table>
-                                                            <Table.Head>
-                                                                <Table.HeadCell>
-                                                                    Bid Price
-                                                                </Table.HeadCell>
-                                                                <Table.HeadCell>
-                                                                    Address
-                                                                </Table.HeadCell>
-                                                                <Table.HeadCell>
-                                                                    Time
-                                                                </Table.HeadCell>
-                                                            </Table.Head>
-                                                            <Table.Body className="divide-y">
-                                                                {listing.bids &&
-                                                                listing.bids.length > 0 ? (
-                                                                    listing.bids.map((bid) => {
-                                                                        const time = new Date(
-                                                                            parseInt(
-                                                                                bid.blockTimestamp *
-                                                                                    1000
-                                                                            )
-                                                                        )
-
-                                                                        return (
-                                                                            <Table.Row
-                                                                                key={
-                                                                                    bid.blockTimestamp
-                                                                                }
-                                                                                className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                                                                            >
-                                                                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                                                                    {bid.bidPrice}
-                                                                                </Table.Cell>
-                                                                                <Table.Cell>
-                                                                                    {bid.buyer}
-                                                                                </Table.Cell>
-                                                                                <Table.Cell>
-                                                                                    {time.toLocaleDateString()}
-                                                                                </Table.Cell>
-                                                                            </Table.Row>
-                                                                        )
-                                                                    })
-                                                                ) : (
-                                                                    <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                                                                        <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                                                            -
-                                                                        </Table.Cell>
-                                                                        <Table.Cell>-</Table.Cell>
-                                                                        <Table.Cell>-</Table.Cell>
-                                                                    </Table.Row>
-                                                                )}
-                                                            </Table.Body>
-                                                        </Table>
+                                                        <BidTable bids={listing.bids}></BidTable>
                                                     </div>
                                                 </div>
                                             </>
                                         ) : (
-                                            <div>Selling</div>
+                                            <></>
                                         )}
                                     </div>
                                 </div>

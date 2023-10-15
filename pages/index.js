@@ -1,6 +1,6 @@
 import Link from "next/link"
 
-import bg from "../assets/images/bg.jpeg"
+import bg from "../assets/images/bg.jpg"
 import { getStyleObjectFromString } from "../units"
 
 export default function Home() {

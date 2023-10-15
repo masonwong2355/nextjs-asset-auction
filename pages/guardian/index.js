@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useWeb3Contract } from "react-moralis"
-import { useQuery, gql } from "@apollo/client"
+import { useQuery } from "@apollo/client"
 import { useSelector } from "react-redux"
 import Link from "next/link"
 import { Button } from "flowbite-react"

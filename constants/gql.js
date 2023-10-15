@@ -18,6 +18,23 @@ export const GET_GUARDIAN = gql(/* GraphQL */ `
     }
 `)
 
+export const GET_BIDS = gql(/* GraphQL */ `
+    query GetBids($buyer: String!) {
+        bids(buyer: $buyer) {
+            id
+            buyer
+            bidPrice
+            blockTimestamp
+            listing {
+                id
+                auctionNft {
+                    tokenUri
+                }
+            }
+        }
+    }
+`)
+
 export const GET_LISTING = gql(/* GraphQL */ `
     query GetListing($id: String!) {
         listing(id: $id) {

@@ -5,7 +5,7 @@ import { Card } from "flowbite-react"
 import { Flowbite, Avatar } from "flowbite-react"
 import Link from "next/link"
 
-import bg from "/assets/images/bg.jpeg"
+import bg from "/assets/images/bg.jpg"
 import ethLogo from "/assets/images/ethereum-eth-logo.svg"
 // import maticLogo from "/assets/images/polygon-matic-logo.svg"
 import { truncateStr } from "../../units"

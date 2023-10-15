@@ -1,5 +1,5 @@
 import Image from "next/image"
-import about from "../assets/images/about.jpeg"
+import about from "../assets/images/about.jpg"
 import { getStyleObjectFromString } from "../units"
 
 export default function About() {
@@ -14,8 +14,7 @@ export default function About() {
                     <div
                         className="absolute inset-0"
                         style={getStyleObjectFromString("background-color: rgb(233, 243, 243);")}
-                    >
-                    </div>
+                    ></div>
                 </div>
                 <div className="relative container mx-auto pt-12 lg:pt-20 pb-12 lg:pb-20">
                     <div className="flex flex-col lg:flex-row w-full gap-10 lg:gap-20 items-center lg:!flex-row-reverse">
@@ -59,7 +58,7 @@ export default function About() {
 
                                     <img
                                         alt="We provide high quality services"
-                                         src={about.src}
+                                        src={about.src}
                                         // decoding="async"
                                         // data-nimg="fill"
                                         layout="fill"
