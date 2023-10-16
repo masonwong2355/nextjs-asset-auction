@@ -4,7 +4,7 @@ frontend:
         preBuild:
             commands:
                 # - nvm use $VERSION_NODE_16
-                - yarn global add node-gyp
+                # - yarn global add node-gyp
                 - yarn install --frozen-lockfile --production --ignore-scripts
         build:
             commands:
