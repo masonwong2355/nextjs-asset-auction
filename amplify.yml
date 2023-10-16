@@ -3,10 +3,12 @@ frontend:
     phases:
         preBuild:
             commands:
+                - nvm use $VERSION_NODE_18
                 - yarn global add node-gyp
                 - yarn install --frozen-lockfile --production --ignore-scripts
         build:
             commands:
+                - nvm use $VERSION_NODE_18
                 - echo "NEXT_PUBLIC_SUBGRAPH_URL=$NEXT_PUBLIC_SUBGRAPH_URL" >> .env.production
                 - echo "PINATA_JWT=$PINATA_JWT" >> .env.production
                 - yarn run build
