@@ -5,6 +5,7 @@ frontend:
             commands:
                 # - nvm use $VERSION_NODE_16
                 # - yarn global add node-gyp
+                # - yarn add core-js-pure
                 - yarn install --frozen-lockfile --production --ignore-scripts
         build:
             commands:
@@ -14,8 +15,8 @@ frontend:
                 - yarn run build
     artifacts:
         baseDirectory: .next
-        files:
-            - "**/*"
+        # files:
+        #     - "**/*"
     cache:
         paths:
             - node_modules/**/*
