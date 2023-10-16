@@ -1,0 +1,19 @@
+version: 1
+frontend:
+    phases:
+        preBuild:
+            commands:
+                - yarn global add node-gyp
+                - yarn install --frozen-lockfile --production --ignore-scripts
+        build:
+            commands:
+                - echo "NEXT_PUBLIC_SUBGRAPH_URL=$NEXT_PUBLIC_SUBGRAPH_URL" >> .env.production
+                - echo "PINATA_JWT=$PINATA_JWT" >> .env.production
+                - yarn run build
+    artifacts:
+        baseDirectory: .next
+        files:
+            - "**/*"
+    cache:
+        paths:
+            - node_modules/**/*
