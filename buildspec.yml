@@ -26,7 +26,7 @@ phases:
             - docker build -t auction-house .
             - docker tag auction-house:latest public.ecr.aws/r1m4s5s1/auction-house:latest
             - echo Compiling the Node.js code
-            - yarn build
+            # - yarn build
 
     post_build:
         commands:
