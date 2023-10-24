@@ -25,12 +25,14 @@ phases:
             - echo Build started on `date`
             - docker build -t auction-house .
             - docker tag auction-house:latest public.ecr.aws/r1m4s5s1/auction-house:latest
-            - echo Compiling the Node.js code
+            - echo Build completed on `date`
             # - yarn build
 
     post_build:
         commands:
-            - echo Build completed on `date`
+            - echo Logging in to Amazon ECR...
+            - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+            - echo Pushing the Docker image
             - docker push public.ecr.aws/r1m4s5s1/auction-house:latest
             - echo push completed on `date`
 # artifacts:
