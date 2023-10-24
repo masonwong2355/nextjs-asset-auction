@@ -30,8 +30,8 @@ phases:
 
     post_build:
         commands:
-            # - echo Logging in to Amazon ECR...
-            # - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+            - echo Logging in to Amazon ECR...
+            - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
             - echo Pushing the Docker image
             - docker push public.ecr.aws/r1m4s5s1/auction-house:latest
             - echo push completed on `date`
