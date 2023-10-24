@@ -6,8 +6,8 @@ env:
 
 phases:
     install:
-        runtime-versions:
-            nodejs: 16
+        # runtime-versions:
+        #     nodejs: 14
         commands:
             # - yarn install -g next@
             # - npm install -g typescript
