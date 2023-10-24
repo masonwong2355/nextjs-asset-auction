@@ -1,0 +1,36 @@
+version: 0.2
+
+env:
+    variables:
+        NODE_ENV: "production"
+
+phases:
+    install:
+        runtime-versions:
+            nodejs: 16
+        commands:
+            # - yarn install -g next@
+            # - npm install -g typescript
+            - yarn install
+    build:
+        commands:
+            - echo Build started on `date`
+            - echo Compiling the Node.js code
+            - yarn build
+
+    # build:
+    #     commands:
+    #         - echo Build started on `date`
+    # post_build:
+    #     commands:
+    #         - echo Build completed on `date`
+
+artifacts:
+    files:
+        - .next/**/*
+        - locales/**/*
+        - static/**/*
+        - package.json
+        - next.config.js
+        - tsconfig.json
+        - tsconfig.server.json
