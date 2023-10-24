@@ -5,25 +5,34 @@ env:
         NODE_ENV: "production"
 
 phases:
-    install:
-        # runtime-versions:
-        #     nodejs: 14
+    pre_build:
         commands:
-            # - yarn install -g next@
-            # - npm install -g typescript
-            - yarn install
+            - echo Logging in to Amazon ECR...
+            - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+            # - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+            # - REPOSITORY_URI=public.ecr.aws/r1m4s5s1/auction-house
+            # - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+            # - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
+    # install:
+    #     # runtime-versions:
+    #     #     nodejs: 14
+    #     commands:
+    #         # - yarn install -g next@
+    #         # - npm install -g typescript
+    #         - yarn install
     build:
         commands:
             - echo Build started on `date`
+            - docker build -t auction-house .
+            - docker tag auction-house:latest public.ecr.aws/r1m4s5s1/auction-house:latest
             - echo Compiling the Node.js code
             - yarn build
 
-    # build:
-    #     commands:
-    #         - echo Build started on `date`
-    # post_build:
-    #     commands:
-    #         - echo Build completed on `date`
+    post_build:
+        commands:
+            - echo Build completed on `date`
+            - docker push public.ecr.aws/r1m4s5s1/auction-house:latest
+            - echo push completed on `date`
 # artifacts:
 #     files:
 #         - .next/**/*
@@ -33,3 +42,5 @@ phases:
 #         - next.config.js
 #         - tsconfig.json
 #         - tsconfig.server.json
+
+# $AWS_DEFAULT_REGION
