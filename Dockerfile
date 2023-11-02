@@ -20,7 +20,8 @@ COPY . .
 RUN yarn run build
 
 #  ---------------------------------
-FROM node:16-alpine AS runner
+# FROM node:16-alpine AS runner
+FROM --platform=linux/amd64 node:16-alpine AS runner
 WORKDIR /app
 
 RUN addgroup --system --gid 1001 nodejs
@@ -37,8 +38,9 @@ COPY --from=builder /app/public ./public
 
 USER nextjs
 
-EXPOSE 3000
-ENV PORT 3000
+# ENV PORT 3000
+ENV PORT 80
 
+# 3000 / 8080 / 80
 CMD ["yarn", "start"]
 #  -------------------------------------

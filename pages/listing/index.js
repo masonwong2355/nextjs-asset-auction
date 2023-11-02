@@ -1,7 +1,7 @@
 import Datepicker from "tailwind-datepicker-react"
 import { useState, useEffect } from "react"
 import { useWeb3Contract } from "react-moralis"
-import { useQuery, gql } from "@apollo/client"
+import { useQuery } from "@apollo/client"
 import { useSelector } from "react-redux"
 import { React, useNotification } from "web3uikit"
 import { Flowbite, Button, Label, Modal, Radio } from "flowbite-react"

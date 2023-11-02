@@ -7,7 +7,7 @@ import Link from "next/link"
 
 import bg from "/assets/images/bg.jpg"
 import ethLogo from "/assets/images/ethereum-eth-logo.svg"
-// import maticLogo from "/assets/images/polygon-matic-logo.svg"
+import maticLogo from "/assets/images/polygon-matic-logo.svg"
 import { truncateStr } from "../../units"
 import Loading from "../../components/Loading"
 import RecordNotFound from "../../components/RecordNotFound"
@@ -111,17 +111,17 @@ export default function GuardianDetail() {
                         </div>
 
                         {/* TODO: Add newtork */}
-                        {/* <div className="min-w-0 flex-1">
+                        <div className="min-w-0 flex-1">
                             <div className="truncate text-sm font-medium text-gray-500 dark:text-gray-400">
                                 Chain Supported
                             </div>
                             <div className="flex truncate text-sm text-gray-900 dark:text-white">
-                                <Avatar
+                                {/* <Avatar
                                     alt="eth logo"
                                     img={ethLogo.src}
                                     rounded
                                     size="xs"
-                                ></Avatar>
+                                ></Avatar> */}
                                 <Avatar
                                     alt="eth logo"
                                     img={maticLogo.src}
@@ -129,24 +129,24 @@ export default function GuardianDetail() {
                                     size="xs"
                                 ></Avatar>
                             </div>
-                        </div> */}
+                        </div>
 
                         <hr></hr>
 
-                        {/* <div className="min-w-0 flex-1">
-                            <div className="truncate text-sm font-medium text-gray-500 dark:text-gray-400">
+                        <div className="min-w-0 flex-1">
+                            {/* <div className="truncate text-sm font-medium text-gray-500 dark:text-gray-400">
                                 Ethereum
                             </div>
                             <div className="flex truncate text-sm text-gray-900 dark:text-white">
                                 0x2D478a26CF0e2fF4455c280ee7E6FE6Ef73cf850
-                            </div>
+                            </div> */}
                             <div className="truncate text-sm font-medium text-gray-500 dark:text-gray-400">
-                                Polygon
+                                Polygon Mumbai
                             </div>
                             <div className="flex truncate text-sm text-gray-900 dark:text-white">
-                                0x2D478a26CF0e2fF4455c280ee7E6FE6Ef73cf850
+                                {guardian.id}
                             </div>
-                        </div> */}
+                        </div>
                     </div>
                     <div className="col-span-3">
                         <h2 className="truncate text-xl text-gray-900">Asset</h2>

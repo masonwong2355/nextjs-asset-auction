@@ -21,6 +21,7 @@ export default function Footer() {
                             >
                                 Auction House
                             </h3>
+                            v3
                         </div>
                         <div
                             className="body-normal"

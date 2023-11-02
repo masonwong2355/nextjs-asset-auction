@@ -20,7 +20,7 @@ export const GET_GUARDIAN = gql(/* GraphQL */ `
 
 export const GET_BIDS = gql(/* GraphQL */ `
     query GetBids($buyer: String!) {
-        bids(buyer: $buyer) {
+        bids(where: { buyer: $buyer }) {
             id
             buyer
             bidPrice

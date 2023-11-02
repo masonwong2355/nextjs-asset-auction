@@ -4,36 +4,35 @@ import { useState, useEffect } from "react"
 export default function BidTable(props) {
     const bids = props.bids
     const showListing = props.showListing ? props.showListing : false
-    const [auctionNftData, setAuctionNftData] = useState(null)
+    const [auctionNftData, setAuctionNftData] = useState({})
 
-    // async function getAuctionNftData(tokenUri) {
-    //     try {
-    //         if (tokenUri.includes("https://example.com")) {
-    //             return
-    //         }
-    //         const response = await fetch(tokenUri)
+    async function getAuctionNftData(listingId, tokenUri) {
+        try {
+            if (tokenUri.includes("https://example.com")) {
+                return
+            }
+            const response = await fetch(tokenUri)
 
-    //         if (!response.ok) {
-    //             console.error("Failed fetch data")
-    //         }
+            if (!response.ok) {
+                console.error("Failed fetch data")
+            }
 
-    //         const jsonData = await response.json()
-    //         setAuctionNftData(jsonData)
-    //     } catch (err) {
-    //         console.error("Unable fetch data", err)
-    //     }
-    // }
+            const jsonData = await response.json()
+            setAuctionNftData((prevState) => ({ ...prevState, [listingId]: jsonData }))
+        } catch (err) {
+            console.error("Unable fetch data", err)
+        }
+    }
 
     useEffect(() => {
-        // console.log(showListing, bids)
-        // if (showListing && bids.listing) {
-        //     console.log("here")
-        //     // getAuctionNftData(bids.listing.auctionNft.tokenUri)
-        // }
-    }, [])
+        if (showListing && bids) {
+            bids.map((bid) => {
+                getAuctionNftData(bid.listing.id, bid.listing.auctionNft.tokenUri)
+            })
+        }
+    }, [bids])
 
-    console.log(bids)
-    console.log(auctionNftData)
+    useEffect(() => {}, [auctionNftData])
 
     return (
         <Table>
@@ -54,8 +53,10 @@ export default function BidTable(props) {
                                 key={bid.blockTimestamp}
                                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
                             >
-                                {showListing && auctionNftData ? (
-                                    <Table.HeadCell>{auctionNftData}</Table.HeadCell>
+                                {showListing && auctionNftData[bid.listing.id] ? (
+                                    <Table.HeadCell>
+                                        {auctionNftData[bid.listing.id].name}
+                                    </Table.HeadCell>
                                 ) : (
                                     <></>
                                 )}

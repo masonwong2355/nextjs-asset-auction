@@ -1,3 +1,4 @@
+# Not Use
 version: 0.2
 
 env:
@@ -8,44 +9,19 @@ phases:
     pre_build:
         commands:
             - echo Logging in to Amazon ECR...
-            - aws ecr-public get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin public.ecr.aws/r1m4s5s1
-            # - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
-            # - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
-            # - REPOSITORY_URI=public.ecr.aws/r1m4s5s1/auction-house
-            # - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-            # - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
-    # install:
-    #     # runtime-versions:
-    #     #     nodejs: 14
-    #     commands:
-    #         # - yarn install -g next@
-    #         # - npm install -g typescript
-    #         - yarn install
+            - aws ecr-public get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ECR
     build:
         commands:
             - echo Build started on `date`
             - docker build -t auction-house .
-            - docker tag auction-house:latest public.ecr.aws/r1m4s5s1/auction-house:latest
+            - docker tag auction-house:latest $AWS_ECR/auction-house:latest
             - echo Build completed on `date`
-            # - yarn build
 
     post_build:
         commands:
-            # - echo Logging in to Amazon ECR...
-            # - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
             - echo aws ecr get-login-password --region ap-southeast-2
             - echo $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
             - echo Pushing the Docker image
-            - docker push public.ecr.aws/r1m4s5s1/auction-house:latest
+            - docker push $AWS_ECR/auction-house:latest
             - echo push completed on `date`
-# artifacts:
-#     files:
-#         - .next/**/*
-#         - locales/**/*
-#         - static/**/*
-#         - package.json
-#         - next.config.js
-#         - tsconfig.json
-#         - tsconfig.server.json
-
-# $AWS_DEFAULT_REGION
+]

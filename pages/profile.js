@@ -8,12 +8,7 @@ import { useQuery } from "@apollo/client"
 import { handleNewNotification } from "../units"
 import BidTable from "../components/BidTable"
 import { GET_BIDS } from "../constants/gql"
-
-import { ApolloProvider, ApolloClient, InMemoryCache, HttpLink, gql } from "@apollo/client"
-const client = new ApolloClient({
-    uri: "https://api.studio.thegraph.com/query/50930/auction-housev2/v0.0.8",
-    cache: new InMemoryCache(),
-})
+import Loading from "../components/Loading"
 
 export default function Home() {
     // web3 param
@@ -31,37 +26,32 @@ export default function Home() {
 
     // variable
     const [proceeds, setProceeds] = useState()
-
-    async function getBids() {
-        const { data } = await client.query({
-            query: GET_BIDS,
-            variables: { buyer: userAddress },
-        })
-
-        console.log(data)
-    }
+    // const [bidFunds, setBidFunds] = useState()
 
     // // query
-    // const { loading, error, data } = useQuery(GET_BIDS, {
-    //     variables: { buyer: userAddress },
-    //     skip: !userAddress,
-    // })
+    const { loading, error, data } = useQuery(GET_BIDS, {
+        variables: { buyer: userAddress },
+        skip: !userAddress,
+    })
 
-    // useEffect(() => {
-    //     // console.log(signer, data)
-    //     if (data && data.bids) {
-    //         setBids(data.bids)
-    //     }
+    console.log(userAddress, data)
 
-    //     if (error) {
-    //         console.log(error)
-    //     }
-    // }, [data, error])
+    useEffect(() => {
+        // console.log(signer, data)
+        if (data && data.bids) {
+            setBids(data.bids)
+        }
+
+        if (error) {
+            console.log(error)
+        }
+    }, [data, error])
 
     useEffect(() => {
         if (signer) {
             getProceeds()
-            getBids()
+            // getBidFunds()
+            // getBids()
         }
     }, [signer])
 
@@ -72,6 +62,11 @@ export default function Home() {
         const proceeds = await auctionHouse.s_proceeds(await signer.getAddress())
         setProceeds(proceeds.toNumber())
     }
+
+    // async function getBidFunds() {
+    //     const bidFunds = await auctionHouse.s_returnFund(await signer.getAddress())
+    //     setBidFunds(bidFunds.toNumber())
+    // }
 
     // ------------------------------------------------------------------------
     async function handleWithdraw() {
@@ -91,27 +86,33 @@ export default function Home() {
     }
 
     return (
-        <div className="container mx-auto m-3">
-            <div className="grid grid-cols-1">
+        <div className="container mx-auto m-3 h-120">
+            <div className="grid grid-cols-1 ">
                 <div>
-                    <h3 className="py-4 px-4 font-bold text-2xl">My Profit: {proceeds}</h3>
+                    <h3 className="py-4 px-4 font-bold text-2xl">Profit: {proceeds}</h3>
                     {proceeds > 0 ? (
                         <Button onClick={handleWithdraw} text="Withdraw Proceeds" type="button" />
                     ) : (
                         <></>
                     )}
                     <br></br>
+                    {/* <h3 className="py-4 px-4 font-bold text-2xl">Bid Fund: {bidFunds}</h3>
+                    {proceeds > 0 ? (
+                        <Button onClick={handleWithdraw} text="Withdraw Proceeds" type="button" />
+                    ) : (
+                        <></>
+                    )}
+                    <br></br> */}
                 </div>
-
-                {process.env.NEXT_PUBLIC_SUBGRAPH_URL}
-                <br></br>
-                {process.env.NEXT_PUBLIC_SOME_MSG}
-                <br></br>
 
                 <div>
                     <h3 className="py-4 px-4 font-bold text-2xl">Bids History</h3>
                     <hr></hr>
-                    <BidTable bids={bids} showListing={true}></BidTable>
+                    {loading ? (
+                        <Loading></Loading>
+                    ) : (
+                        <BidTable bids={bids} showListing={true}></BidTable>
+                    )}
                 </div>
             </div>
         </div>

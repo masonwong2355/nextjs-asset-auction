@@ -49,7 +49,7 @@ export default function Guardians() {
     }
 
     return (
-        <div className="relative flex mx-auto w-full transition-all duration-300 justify-center items-center p-3  h-auto">
+        <div className="relative flex mx-auto w-full transition-all duration-300 justify-center items-center p-3 h-120">
             <div className="overflow-x-hidden pb-1 container">
                 <div
                     className="commonninja_component pid-4369e19f-0e13-41fb-b79b-a649b48762c2"

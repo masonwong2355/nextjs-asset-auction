@@ -179,11 +179,12 @@ export default function ListingDetail() {
                                                     <div>
                                                         <Link
                                                             href={`/guardian/${listing.guardian.id}`}
+                                                            legacyBehavior
                                                         >
-                                                            <a>
+                                                            <>
                                                                 {listing.guardian.name} (
                                                                 {listing.guardian.location})
-                                                            </a>
+                                                            </>
                                                         </Link>
                                                     </div>
                                                 </div>
