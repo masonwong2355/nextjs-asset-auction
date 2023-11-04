@@ -38,9 +38,8 @@ COPY --from=builder /app/public ./public
 
 USER nextjs
 
-# ENV PORT 3000
-ENV PORT 80
+ENV PORT 3000
 
-# 3000 / 8080 / 80
+# ENV PORT 3000 / 8080 / 80
 CMD ["yarn", "start"]
 #  -------------------------------------
